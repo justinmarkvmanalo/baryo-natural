@@ -346,16 +346,54 @@
     }
 
     .card {
-      background: rgba(255, 253, 248, 0.88);
+      min-height: 520px;
+      border-radius: 24px;
+      perspective: 1200px;
+      cursor: pointer;
+      outline: 0;
+    }
+
+    .card:focus-visible .card-inner {
+      box-shadow: 0 0 0 4px rgba(125, 130, 51, 0.28), 0 10px 24px rgba(63, 35, 10, 0.08);
+    }
+
+    .card-inner {
+      position: relative;
+      height: 100%;
+      min-height: 520px;
+      border-radius: 24px;
+      transition: transform 0.55s ease;
+      transform-style: preserve-3d;
+      box-shadow: 0 10px 24px rgba(63, 35, 10, 0.08);
+    }
+
+    .card.is-flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       border: 1px solid rgba(92, 68, 38, 0.08);
       border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 10px 24px rgba(63, 35, 10, 0.08);
+      background: rgba(255, 253, 248, 0.92);
+      backface-visibility: hidden;
+    }
+
+    .card-back {
+      padding: 20px;
+      gap: 12px;
+      transform: rotateY(180deg);
+      background: linear-gradient(180deg, #fffaf0, #f1ead9);
     }
 
     .card .image {
       aspect-ratio: 1 / 1;
       background: linear-gradient(180deg, #fff, #f8f1e4);
+      flex: 0 0 auto;
     }
 
     .card .image img {
@@ -368,13 +406,15 @@
       padding: 16px 16px 18px;
       display: grid;
       gap: 10px;
+      flex: 1;
+      align-content: start;
     }
 
     .card h3 {
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
       font-size: 1.4rem;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
     }
 
     .card p {
@@ -389,9 +429,37 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-top: 4px;
+      margin-top: auto;
       color: var(--muted);
       font-size: 0.92rem;
+    }
+
+    .card-back .description {
+      display: grid;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.92rem;
+    }
+
+    .card-back ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .card-back li {
+      margin: 4px 0;
+    }
+
+    .hashtags {
+      color: var(--olive);
+      font-size: 0.82rem;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
     }
 
     .badge {
@@ -571,8 +639,7 @@
           <div class="eyebrow">Premium herbs, spices, and powders</div>
           <h1>The taste that lasts.</h1>
           <p>
-            The uploaded artwork is now used directly as the main visual reference, with the real Baryo Natural logo and product assets
-            driving the rest of the page.
+            Discover organic herbs, spices, and flavorful powders made from natural plants for everyday meals and food business recipes.
           </p>
           <div class="cta-row">
             <a class="btn" href="https://www.lazada.com.ph/shop/baryo-natural" target="_blank" rel="noopener noreferrer">Order on Lazada</a>
@@ -590,7 +657,7 @@
               <img class="product-shot" src="calamansi powder.jpg" alt="Calamansi Powder product artwork" />
               <div class="copy">
                 <strong>Fresh arrivals</strong>
-                <span>Built from the actual uploaded brand assets</span>
+                <span>Organic herbs and spices made from natural plants</span>
               </div>
             </div>
           </div>
@@ -603,76 +670,229 @@
             <div>
               <h2 class="section-title">Featured products</h2>
               <p class="section-desc">
-                These cards use the actual product images in the folder, so the page matches the brand materials instead of placeholder art.
+                Click any product card to flip it and read what makes each Baryo Natural item useful in your kitchen.
               </p>
             </div>
             <span class="badge">New line</span>
           </div>
 
           <div class="grid">
-            <article class="card">
-              <div class="image">
-                <img src="calamansi powder.jpg" alt="Calamansi Powder" />
-              </div>
-              <div class="card-body">
-                <h3>Calamansi Powder</h3>
-                <p>Bright citrus flavor in a clean ready-to-use format.</p>
-                <div class="meta"><span>Premium</span><span class="badge">View</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="image">
-                <img src="barley powder.jpg" alt="Barley Powder" />
-              </div>
-              <div class="card-body">
-                <h3>Barley Powder</h3>
-                <p>Herbal green powder with a fresh natural look.</p>
-                <div class="meta"><span>Best seller</span><span class="badge">View</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="image">
-                <img src="bell pepper powder.jpg" alt="Bell Pepper Crushed" />
-              </div>
-              <div class="card-body">
-                <h3>Bell Pepper Crushed</h3>
-                <p>Colorful spice packaging with bold promotional art.</p>
-                <div class="meta"><span>New arrival</span><span class="badge">View</span></div>
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Honey Lemon Powder card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="honey lemon powder.jpg" alt="Honey Lemon Powder" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Honey Lemon Powder</h3>
+                    <p>Natural sweetness with bright citrus flavor for cooking, baking, sauces, and drinks.</p>
+                    <div class="meta"><span>New product</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Honey Lemon Powder</h3>
+                  <div class="description">
+                    <p>Introducing Baryo Natural Honey Lemon Powder. Add natural sweetness and zesty citrus flavor to marinades, glazes, sauces, baked goods, and more.</p>
+                    <ul>
+                      <li>Made with the goodness of honey and lemon.</li>
+                      <li>Easy to use in cooking and baking.</li>
+                      <li>Naturally flavorful and versatile.</li>
+                    </ul>
+                    <p>Bring a refreshing twist to your kitchen with Baryo Natural Honey Lemon Powder.</p>
+                    <p class="hashtags">#BaryoNatural #HoneyLemonPowder #CookingMadeEasy #NaturalFlavors #KitchenEssentials</p>
+                  </div>
+                </div>
               </div>
             </article>
 
-            <article class="card">
-              <div class="image">
-                <img src="vinegar powder.jpg" alt="Vinegar Powder" />
-              </div>
-              <div class="card-body">
-                <h3>Vinegar Powder</h3>
-                <p>Light, sharp, and packaged for modern display.</p>
-                <div class="meta"><span>Seasonal</span><span class="badge">View</span></div>
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Tomato Powder card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="tomato powder.jpg" alt="Tomato Powder" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Tomato Powder</h3>
+                    <p>Rich tomato flavor without spoilage, ready for soups, sauces, pasta, and marinades.</p>
+                    <div class="meta"><span>New product</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Tomato Powder</h3>
+                  <div class="description">
+                    <p>Introducing Baryo Natural Tomato Powder, the easy and natural way to add rich tomato flavor to your favorite dishes.</p>
+                    <ul>
+                      <li>Made from carefully selected tomatoes.</li>
+                      <li>No artificial colors or preservatives.</li>
+                      <li>Convenient for soups, sauces, stews, pasta, marinades, and more.</li>
+                    </ul>
+                    <p>Enjoy fresh tomato taste anytime. Just scoop, mix, and cook.</p>
+                    <p class="hashtags">#BaryoNatural #TomatoPowder #NaturalIngredients #HealthyCooking #FarmToTable #SupportLocal #KitchenEssential #FoodBusinessPH</p>
+                  </div>
+                </div>
               </div>
             </article>
 
-            <article class="card">
-              <div class="image">
-                <img src="tomato powder.jpg" alt="Tomato Powder" />
-              </div>
-              <div class="card-body">
-                <h3>Tomato Powder</h3>
-                <p>Warm red tones with a strong kitchen-ready feel.</p>
-                <div class="meta"><span>Popular</span><span class="badge">View</span></div>
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Vinegar Powder card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="vinegar powder.jpg" alt="Vinegar Powder" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Vinegar Powder</h3>
+                    <p>Tangy asim flavor in powder form for snacks, street food, and grilled favorites.</p>
+                    <div class="meta"><span>Pinoy flavor</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Vinegar Powder</h3>
+                  <div class="description">
+                    <p>Introducing Baryo Natural Vinegar Powder, the easiest way to add perfect asim flavor anytime, anywhere.</p>
+                    <ul>
+                      <li>Great for fries, chips, popcorn, and homemade snacks.</li>
+                      <li>Perfect with BBQ, grilled dishes, and street food cravings.</li>
+                      <li>All the tangy goodness you love, now in powder form.</li>
+                    </ul>
+                    <p class="hashtags">#BaryoNatural #VinegarPowder #AsimLovers #FoodTrip #PinoyFlavors</p>
+                  </div>
+                </div>
               </div>
             </article>
 
-            <article class="card">
-              <div class="image">
-                <img src="white cheddar cheese.jpg" alt="White Cheddar Cheese" />
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Sweet Chili Vinegar card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="sweet chili vinegar powder.jpg" alt="Sweet Chili Vinegar" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Sweet Chili Vinegar</h3>
+                    <p>Sweet, spicy, and tangy flavor for dipping, cooking, marinades, and flavor boosting.</p>
+                    <div class="meta"><span>Swicy favorite</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Sweet Chili Vinegar</h3>
+                  <div class="description">
+                    <p>Introducing the new Sweet Chili Vinegar by Baryo Natural, with sweet, spicy, and tangy goodness in every drop.</p>
+                    <ul>
+                      <li>Perfect as sawsawan, marinade, or flavor booster.</li>
+                      <li>Made for grilled dishes, fried food, seafood, and street food favorites.</li>
+                      <li>Bold flavor for Filipino food lovers.</li>
+                    </ul>
+                    <p>Available now on Shopee, Lazada, and TikTok Shop.</p>
+                    <p class="hashtags">#SweetChiliVinegar #BaryoNatural #Swicy #FilipinoFood #Sawsawan #SweetAndSpicy #ChiliVinegar #NaturalCondiments #FoodiePH #SupportLocal</p>
+                  </div>
+                </div>
               </div>
-              <div class="card-body">
-                <h3>White Cheddar Cheese</h3>
-                <p>Rich snack-seasoning visual with a clean label layout.</p>
-                <div class="meta"><span>Featured</span><span class="badge">View</span></div>
+            </article>
+
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Barley Powder card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="barley powder.jpg" alt="Barley Powder" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Barley Powder</h3>
+                    <p>Premium young barley grass powder for a simple, natural wellness drink.</p>
+                    <div class="meta"><span>Healthy essential</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Barley Powder</h3>
+                  <div class="description">
+                    <p>Say hello to Baryo Natural Barley Powder, a healthy essential made from premium young barley grass.</p>
+                    <ul>
+                      <li>Naturally rich in vitamins, minerals, and fiber.</li>
+                      <li>Easy to prepare as part of your wellness routine.</li>
+                      <li>A simple way to start your go-natural journey.</li>
+                    </ul>
+                    <p class="hashtags">#BaryoNatural #BarleyPowder #SuperfoodDrink #GoNatural #StayHealthy</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Calamansi Powder card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="calamansi powder.jpg" alt="Calamansi Powder" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Calamansi Powder</h3>
+                    <p>Zesty, punchy, and natural calamansi flavor for drinks, dishes, and everyday recipes.</p>
+                    <div class="meta"><span>Citrus favorite</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Calamansi Powder</h3>
+                  <div class="description">
+                    <p>Our Calamansi Powder is zesty, punchy, and oh-so-natural. Sprinkle the sunshine, stir the flavor, and savor the vibe.</p>
+                    <ul>
+                      <li>Bright calamansi taste in convenient powder form.</li>
+                      <li>Great for beverages, marinades, sauces, and cooking.</li>
+                      <li>Only from Baryo Natural.</li>
+                    </ul>
+                    <p class="hashtags">#SqueezeTheGoodness #CalamansiPowder #BaryoNatural</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip Dried Bell Pepper card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="bell pepper powder.jpg" alt="Dried Bell Pepper" />
+                  </div>
+                  <div class="card-body">
+                    <h3>Dried Bell Pepper</h3>
+                    <p>Farm-style bell pepper flavor, naturally preserved for easy cooking.</p>
+                    <div class="meta"><span>Farm flavor</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>Dried Bell Pepper</h3>
+                  <div class="description">
+                    <p>Taste the flavor of the farm, naturally preserved. Baryo Natural Dried Bell Pepper is pure, natural, and full of goodness.</p>
+                    <ul>
+                      <li>Adds color and bell pepper flavor to everyday dishes.</li>
+                      <li>Useful for sauces, soups, toppings, and food business recipes.</li>
+                      <li>Made for convenient healthy cooking.</li>
+                    </ul>
+                    <p class="hashtags">#BaryoNatural #DriedBellPepper #FarmFreshFlavor #HealthyCooking</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Flip White Cheddar Cheese card">
+              <div class="card-inner">
+                <div class="card-face card-front">
+                  <div class="image">
+                    <img src="white cheddar cheese.jpg" alt="White Cheddar Cheese" />
+                  </div>
+                  <div class="card-body">
+                    <h3>White Cheddar Cheese</h3>
+                    <p>Creamy, rich, and cheesy flavor for snacks, pasta, burgers, sandwiches, and more.</p>
+                    <div class="meta"><span>Cheesy goodness</span><span class="badge">Click to flip</span></div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <h3>White Cheddar Cheese</h3>
+                  <div class="description">
+                    <p>Introducing our new White Cheddar Cheese: creamy, rich, and full of cheesy goodness.</p>
+                    <ul>
+                      <li>Levels up pasta, burgers, sandwiches, and snack recipes.</li>
+                      <li>Great for food businesses and home cooking.</li>
+                      <li>Made for cheese lovers who want bold flavor.</li>
+                    </ul>
+                    <p class="hashtags">#WhiteCheddar #CheeseLovers #SayCheese #FoodiePH #CheesyGoodness #CheeseAddict #FoodBusinessPH #NewProductLaunch</p>
+                  </div>
+                </div>
               </div>
             </article>
           </div>
@@ -702,11 +922,27 @@
           <img src="sweet chili vinegar powder.jpg" alt="Sweet chili vinegar powder artwork" />
         </div>
         <div class="footer-caption">
-          <span>Using the uploaded reference image as the hero artwork.</span>
-          <span>Using the brand logo and product files directly.</span>
+          <span>Natural flavor for home kitchens and food businesses.</span>
+          <span>Order Baryo Natural through Lazada or Shopee.</span>
         </div>
       </section>
     </div>
   </main>
+  <script>
+    document.querySelectorAll(".card").forEach((card) => {
+      const flip = () => {
+        const isFlipped = card.classList.toggle("is-flipped");
+        card.setAttribute("aria-pressed", String(isFlipped));
+      };
+
+      card.addEventListener("click", flip);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          flip();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
