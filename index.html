@@ -221,13 +221,9 @@
         radial-gradient(circle at 20% 20%, rgba(206, 224, 160, 0.35), transparent 28%),
         radial-gradient(circle at 80% 15%, rgba(255, 207, 101, 0.22), transparent 26%),
         linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,241,227,0.95));
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 18px;
-      padding: 20px;
-      align-items: center;
       overflow: hidden;
       position: relative;
+      padding: 20px;
     }
 
     .hero-visual-inner::before {
@@ -239,6 +235,7 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(201, 227, 145, 0.35), transparent 62%);
       pointer-events: none;
+      z-index: 0;
     }
 
     .hero-visual-inner::after {
@@ -251,6 +248,23 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(200, 79, 45, 0.16), transparent 64%);
       pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-slides {
+      display: flex;
+      transition: transform 0.6s ease;
+      height: 100%;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-badge {
@@ -303,6 +317,29 @@
     .hero-product .copy span {
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .hero-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .hero-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(42, 29, 18, 0.25);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .hero-dot.active {
+      background: var(--brand);
     }
 
     .section {
@@ -688,16 +725,51 @@
 
         <div class="hero-visual">
           <div class="hero-visual-inner">
-            <div class="hero-badge">
-              <img src="baryo natural official logo.jpg" alt="Baryo Natural logo" />
-              <span>Herbs & Spices</span>
-            </div>
-            <div class="hero-product">
-              <img class="product-shot" src="calamansi powder.jpg" alt="Calamansi Powder product artwork" />
-              <div class="copy">
-                <strong>Fresh arrivals</strong>
-                <span>Organic herbs and spices made from natural plants</span>
+            <div class="hero-slides" id="heroSlides">
+              <div class="hero-slide">
+                <div class="hero-badge">
+                  <img src="baryo natural official logo.jpg" alt="Baryo Natural logo" />
+                  <span>Herbs & Spices</span>
+                </div>
+                <div class="hero-product">
+                  <img class="product-shot" src="calamansi powder.jpg" alt="Calamansi Powder" />
+                  <div class="copy">
+                    <strong>Fresh arrivals</strong>
+                    <span>Organic herbs and spices made from natural plants</span>
+                  </div>
+                </div>
               </div>
+              <div class="hero-slide">
+                <div class="hero-badge">
+                  <img src="baryo natural official logo.jpg" alt="Baryo Natural logo" />
+                  <span>Herbs & Spices</span>
+                </div>
+                <div class="hero-product">
+                  <img class="product-shot" src="tomato powder.jpg" alt="Tomato Powder" />
+                  <div class="copy">
+                    <strong>Tomato Powder</strong>
+                    <span>Rich tomato flavor without spoilage</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-slide">
+                <div class="hero-badge">
+                  <img src="baryo natural official logo.jpg" alt="Baryo Natural logo" />
+                  <span>Herbs & Spices</span>
+                </div>
+                <div class="hero-product">
+                  <img class="product-shot" src="honey lemon powder.jpg" alt="Honey Lemon Powder" />
+                  <div class="copy">
+                    <strong>Honey Lemon Powder</strong>
+                    <span>Natural sweetness with bright citrus flavor</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hero-dots" id="heroDots">
+              <span class="hero-dot active" data-index="0"></span>
+              <span class="hero-dot" data-index="1"></span>
+              <span class="hero-dot" data-index="2"></span>
             </div>
           </div>
         </div>
@@ -1441,6 +1513,38 @@
       productGrid.classList.remove("limited");
       showMoreBtn.classList.add("hidden");
     });
+
+    const slidesContainer = document.getElementById("heroSlides");
+    const dots = document.querySelectorAll(".hero-dot");
+    let currentSlide = 0;
+    const totalSlides = dots.length;
+    let interval;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % totalSlides);
+    }
+
+    function startCarousel() {
+      interval = setInterval(nextSlide, 4000);
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        clearInterval(interval);
+        goToSlide(parseInt(dot.dataset.index));
+        startCarousel();
+      });
+    });
+
+    startCarousel();
   </script>
 </body>
 </html>
